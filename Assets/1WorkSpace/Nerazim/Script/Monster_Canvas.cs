@@ -21,6 +21,14 @@ public class Monster_Canvas : MonoBehaviour
 
     private void Update()
     {
+        if (this.gameObject.transform.parent.gameObject.GetComponent<Player_State>())
+        {
+            if (this.gameObject.transform.parent.gameObject.GetComponent<Player_State>().state == 1)
+            {
+                this.gameObject.SetActive(false);
+            }
+        }
+        
         this.transform.LookAt(this.transform.position + (cam.transform.rotation * Vector3.forward), cam.transform.rotation * Vector3.up);
         
         RemainHP = monster.GetComponent<Monster_State>().Monster_HP;

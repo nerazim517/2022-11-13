@@ -18,7 +18,7 @@ public class mon_AI : MonoBehaviour
     void FixedUpdate()
     {
         player = GameObject.FindWithTag("Player");
-        if(Vector3.Distance(transform.position, player.transform.position) <= 10f && Vector3.Distance(transform.position, player.transform.position)>2.5f && !this.GetComponent<mon_ani>().lockAI){
+        if(Vector3.Distance(transform.position, player.transform.position) <= 10f && Vector3.Distance(transform.position, player.transform.position)>2.5f && !this.GetComponent<mon_ani>().lockAI && !this.GetComponent<mon_ani>().dead){
             navi.enabled = true;
             navi.SetDestination(player.transform.position);
         }

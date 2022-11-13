@@ -35,7 +35,7 @@ public class Canvas : MonoBehaviour
             Selected_Monster_Info.SetActive(false);
         }
         Player_HP_UI.text = "HP:" + player.GetComponent<Player_State>().Player_HP;
-        Time_UI.text = "Time:" + Time.time;
+        Time_UI.text = "Time:" + (int)Time.time;
         Score_UI.text = "Score:" + player.GetComponent<Player_State>().Player_Score;
     }
 }

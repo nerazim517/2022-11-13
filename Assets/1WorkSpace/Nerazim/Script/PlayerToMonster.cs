@@ -19,7 +19,7 @@ public class PlayerToMonster : MonoBehaviour
         
         if (this.GetComponent<Player_State>().Player_Selected_Monster)
         {
-            if (Input.GetKey(KeyCode.Q))
+            if (Input.GetKey(KeyCode.Q) && GetComponent<Player_State>().Player_Selected_Monster.GetComponent<Monster_State>().CanChange)
             {
                 
                 GetComponent<Player_State>().Player_Selected_Monster.transform.tag = "Player";

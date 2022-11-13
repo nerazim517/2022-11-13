@@ -10,6 +10,9 @@ public class mon_ani : MonoBehaviour
     public static GameObject player;
     public bool lockAI;
     public bool playermode;
+    public bool dead;
+
+    private Vector3 lookDir;
     
     int atkstate;
     int runstate;
@@ -24,6 +27,7 @@ public class mon_ani : MonoBehaviour
         runstate = Animator.StringToHash("Base Layer.run");
         prevPos = transform.position;
         playermode = false;
+        dead = false;
     }
 
     // Update is called once per frame
@@ -36,14 +40,24 @@ public class mon_ani : MonoBehaviour
     }
     void FixedUpdate(){
         player = GameObject.FindWithTag("Player");
+        lookDir = player.transform.position - transform.position;
         float vel = ((transform.position - prevPos) / Time.deltaTime).magnitude;
         AnimatorStateInfo state = ani.GetCurrentAnimatorStateInfo(0);
-        if (!playermode)
+        if (GetComponent<Monster_State>().Monster_HP <= 0f && !dead)
+        {
+            dead = true;
+            ani.SetBool("dead", dead);
+            Invoke("DestroyIt", 4.0f);
+            
+        }
+        else if (!playermode && !dead)
         {
             lockAI = false;
             ani.SetFloat("speed", vel);
             if (Vector3.Distance(transform.position, player.transform.position) <= 2.5f)
             {
+                Quaternion q = Quaternion.LookRotation(lookDir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, q, 2 * Time.deltaTime);
                 ani.SetBool("attack01", true);
             }
             else if (state.fullPathHash == atkstate)
@@ -52,7 +66,7 @@ public class mon_ani : MonoBehaviour
                 lockAI = true;
             }
         }
-        else
+        else if(playermode && !dead)
         {
             lockAI = true;
             ani.SetFloat("speed", vel);
@@ -63,6 +77,10 @@ public class mon_ani : MonoBehaviour
             }
         }
         prevPos = transform.position;
+    }
+    public void DestroyIt()
+    {
+        Destroy(gameObject);
     }
     
 }
